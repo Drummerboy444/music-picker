@@ -1,0 +1,3 @@
+1,https://www.youtube.com/watch?v=lAGm9MTyRJ8&ab_channel=ChrisThePlayer,BATTLE
+2,https://www.youtube.com/watch?v=fIuO3RpMvHg&ab_channel=SkoomaScamp,BACKGROUND,TAVERN
+3,https://www.youtube.com/watch?v=wo1Z8DdOrqA&ab_channel=TheAmbienceChannel,BATTLE
