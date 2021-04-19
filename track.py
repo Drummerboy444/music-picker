@@ -13,3 +13,6 @@ class Track:
         matching_tag_count = len([tag for tag in tags if tag in self.tags])
         total_tag_count = len(set(tags + self.tags))
         return matching_tag_count / total_tag_count
+
+    def serialize(self):
+        return f"{self.id},{self.url},{','.join(self.tags)}"

@@ -7,10 +7,13 @@ def parse_raw_track(raw_track):
     return Track(int(split[0]), split[1], split[2:])
 
 
-with open('data/tracks.txt') as raw_tracks, open('data/tags.txt') as raw_tags:
-    tracks = [parse_raw_track(raw_track) for raw_track in raw_tracks.read().split("\n")]
-    tags = raw_tags.read().split("\n")
-
+tracks_file = open("data/tracks.txt")
+tracks = [parse_raw_track(raw_track) for raw_track in tracks_file.read().split("\n")]
+tracks_file.close()
 
 state_manager = StateManager(tracks)
 state_manager.await_next_command()
+
+tracks_file = open("data/tracks.txt", "w")
+tracks_file.write("\n".join(track.serialize() for track in tracks))
+tracks_file.close()
