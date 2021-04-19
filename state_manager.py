@@ -8,7 +8,6 @@ class StateManager:
         self.tracks = tracks
 
     def await_next_command(self):
-        print()
         raw_input = input(":")
         split = raw_input.split()
         command = split[0]
@@ -24,39 +23,70 @@ class StateManager:
         elif command == "find-track":
             self.find_track(args)
         elif command == "quit":
-            return
+            return True
+        elif command == "!quit":
+            return False
         else:
-            print()
             print("unknown command")
-        self.await_next_command()
+            print()
+        return self.await_next_command()
 
     def help(self):
-        print()
         print("Available commands:")
         print("  help                   : help")
         print("  print                  : prints all tracks")
         print("  add-track <url> <tags> : adds a new track with the given url and tags")
         print("  remove-track <id>      : removes the track with the given id")
         print("  find-track <tags>      : finds a track which best matches the given tags")
-        print("  quit                   : quit application")
+        print("  quit                   : save and quit the application")
+        print("  !quit                  : quit the application without saving")
+        print()
 
     def print(self):
         for track in self.tracks:
-            print()
             track.print()
+            print()
 
     def add_track(self, args):
+        if len(args) <= 1:
+            print("not enough args to add a track")
+            print()
+            return
+
         id = max(track.id for track in self.tracks) + 1
         url = args[0]
         tags = args[1:]
         self.tracks.append(Track(id, url, tags))
+        print()
 
     def remove_track(self, args):
-        id = int(args[0])
-        track = next(track for track in self.tracks if track.id == id)
-        self.tracks.remove(track)
+        if len(args) != 1:
+            print("need exactly 1 arg to remove a track")
+            print()
+            return
+
+        try:
+            id = int(args[0])
+        except ValueError:
+            print("need an integer to remove a track")
+            print()
+            return
+
+        for track in self.tracks:
+            if track.id == id:
+                self.tracks.remove(track)
+                print()
+                return
+
+        print("found no track to remove for the given ID")
+        print()
 
     def find_track(self, tags):
+        if (len(tags)) <= 0:
+            print("not enough args to find a track")
+            print()
+            return
+
         tracks_to_scores = {track: track.get_score(tags) for track in self.tracks}
 
         max_score = 0
@@ -65,5 +95,5 @@ class StateManager:
                 max_score = tracks_to_scores[track]
 
         tracks_with_max_score = [track for track in self.tracks if tracks_to_scores[track] == max_score]
-        print()
         print(random.choice(tracks_with_max_score).url)
+        print()

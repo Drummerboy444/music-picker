@@ -12,8 +12,9 @@ tracks = [parse_raw_track(raw_track) for raw_track in tracks_file.read().split("
 tracks_file.close()
 
 state_manager = StateManager(tracks)
-state_manager.await_next_command()
+should_save = state_manager.await_next_command()
 
-tracks_file = open("data/tracks.txt", "w")
-tracks_file.write("\n".join(track.serialize() for track in tracks))
-tracks_file.close()
+if should_save:
+    tracks_file = open("data/tracks.txt", "w")
+    tracks_file.write("\n".join(track.serialize() for track in tracks))
+    tracks_file.close()
